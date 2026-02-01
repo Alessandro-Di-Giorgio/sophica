@@ -193,22 +193,54 @@
     }
 
     // Small "pop" sound with WebAudio (no external files)
-    function popSound(){
-      try{
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = "sine";
-        o.frequency.setValueAtTime(740, ctx.currentTime);
-        g.gain.setValueAtTime(0.0001, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.10, ctx.currentTime + 0.01);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.12);
-        o.connect(g); g.connect(ctx.destination);
-        o.start();
-        o.stop(ctx.currentTime + 0.13);
-        setTimeout(()=>ctx.close(), 250);
-      }catch(e){}
+    function playSound(type){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+
+    if(type === "yes"){
+      // brillante e felice
+      o.type = "triangle";
+      o.frequency.setValueAtTime(880, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.15);
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+      o.start();
+      o.stop(ctx.currentTime + 0.26);
     }
+
+    if(type === "maybe"){
+      // morbido / curioso
+      o.type = "sine";
+      o.frequency.setValueAtTime(520, ctx.currentTime);
+      o.frequency.linearRampToValueAtTime(600, ctx.currentTime + 0.18);
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
+      o.start();
+      o.stop(ctx.currentTime + 0.32);
+    }
+
+    if(type === "no"){
+      // comico / triste
+      o.type = "square";
+      o.frequency.setValueAtTime(420, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.22);
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+      o.start();
+      o.stop(ctx.currentTime + 0.36);
+    }
+
+    o.connect(g);
+    g.connect(ctx.destination);
+    setTimeout(()=>ctx.close(), 400);
+  }catch(e){}
+}
+
 
     function spawnHeart(){
       const h = document.createElement('div');
@@ -284,9 +316,9 @@
 
     // --- interactions ---
     yesBtn.addEventListener('click', ()=>{
-      popSound();
+      playSound("yes");
       startHearts();
-      setMessage("SIII!! 💃💃💃", "Hai reso il tuo amato molto felice e coccoloso 💝");
+      setMessage("SIII, non ti deluderò!! 💃💃💃", "Hai reso il tuo amato molto felice e coccoloso 💝");
       // disable other buttons softly
       noBtn.disabled = true;
       maybeBtn.disabled = true;
@@ -295,7 +327,7 @@
     });
 
     maybeBtn.addEventListener('click', ()=>{
-      popSound();
+      playSound("maybe");
       setMessage("Devo essere più convincente? 😳", "Posso essere molto persuasivo 😏");
       spawnHeart();
       spawnHeart();
@@ -308,7 +340,7 @@
     });
 
     noBtn.addEventListener('click', ()=>{
-      popSound();
+      playSound("no");
       const phrase = noPhrases[Math.min(noCount, noPhrases.length - 1)];
       noCount++;
       setMessage(phrase, "Riprova… magari hai clickato male 😌");
