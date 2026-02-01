@@ -174,13 +174,13 @@
     const card = document.getElementById('card');
 
     const noPhrases = [
-      "Are you sure? 🥺",
-      "Like… 100% sure? 😭",
-      "I can offer chocolate… 🍫",
-      "And cuddles… 🫂",
-      "And a surprise… 🎁",
-      "Ok ok… last chance 😔",
-      "NO button seems suspicious today 🤨"
+      "Ne sei proprio sicura? 🥺",
+      "Proprio… 100% sure? 😭",
+      "Posso farti un risotto con gli asparagi… ",
+      "Coccole… 🫂",
+      "Sorprese… 🎁",
+      "Ok ok… un'ultima chance 😔",
+      "Mi sa che ho sbagliato a collegare i bottoni, grazie per il sì 🤨"
     ];
     let noCount = 0;
     let heartsInterval = null;
@@ -286,7 +286,7 @@
     yesBtn.addEventListener('click', ()=>{
       popSound();
       startHearts();
-      setMessage("YAAAAY!! 💃💃💃", "You just made me ridiculously happy. See you for cuddles + a surprise 💝");
+      setMessage("SIII!! 💃💃💃", "Hai reso il tuo amato molto felice e coccoloso 💝");
       // disable other buttons softly
       noBtn.disabled = true;
       maybeBtn.disabled = true;
@@ -296,7 +296,7 @@
 
     maybeBtn.addEventListener('click', ()=>{
       popSound();
-      setMessage("Ooooh… a MAYBE 😳", "Take your time. I’ll be right here, being cute and patient 😏");
+      setMessage("Ooooh… un forse 😳", "Posso essere più convincente? 😏");
       spawnHeart();
       spawnHeart();
     });
@@ -311,7 +311,7 @@
       popSound();
       const phrase = noPhrases[Math.min(noCount, noPhrases.length - 1)];
       noCount++;
-      setMessage(phrase, "Try again… I believe in you 😌");
+      setMessage(phrase, "Riprova… magari hai clickato male 😌");
       moveNoButton();
       spawnHeart(); // tiny guilt heart 😇
     });
